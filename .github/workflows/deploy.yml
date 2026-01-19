@@ -6,6 +6,10 @@ on:
             - main
     workflow_dispatch: # Allow manual trigger
 
+permissions:
+    id-token: write
+    contents: read
+
 env:
     AZURE_WEBAPP_NAME: azure-my-services
     PYTHON_VERSION: "3.12"
