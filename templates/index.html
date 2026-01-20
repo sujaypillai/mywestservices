@@ -800,10 +800,89 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--text-muted);
         }
+
+        /* Disclaimer Banner */
+        .disclaimer-banner {
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.75rem 0;
+            text-align: center;
+        }
+
+        .disclaimer-text {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .disclaimer-text i {
+            color: #f59e0b;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .footer-disclaimer {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            line-height: 1.6;
+            padding: 1rem;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            border-left: 3px solid #f59e0b;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.85rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-primary);
+        }
+
+        .footer-copyright {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
     </style>
 </head>
 <body>
     <div class="noise-overlay"></div>
+
+    <!-- Disclaimer Banner -->
+    <div class="disclaimer-banner">
+        <div class="container">
+            <p class="disclaimer-text">
+                <i class="bi bi-info-circle-fill"></i>
+                This is an unofficial community project. Not affiliated with or endorsed by Microsoft.
+            </p>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <header class="hero">
@@ -1082,5 +1161,23 @@
                 .replace(/\n/g, '<br>');
         }
     </script>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-disclaimer">
+                    <strong>⚠️ Disclaimer:</strong> This website is an independent, community-driven project and is not officially affiliated with, endorsed by, or connected to Microsoft Corporation or Microsoft Azure. The information displayed is fetched dynamically from Azure Resource Manager APIs and may not reflect the most current availability. For official and authoritative information about Azure services, please visit <a href="https://azure.microsoft.com" target="_blank" rel="noopener">azure.microsoft.com</a>.
+                </div>
+                <div class="footer-links">
+                    <a href="https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/" target="_blank" rel="noopener">Official Azure Products by Region</a>
+                    <a href="https://github.com/sujaypillai/mywestservices" target="_blank" rel="noopener"><i class="bi bi-github"></i> Source Code</a>
+                </div>
+                <div class="footer-copyright">
+                    © 2026 Azure Services Explorer. Open source project.
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
