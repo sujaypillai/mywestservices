@@ -19,6 +19,9 @@ jobs:
     build-and-deploy:
         runs-on: ubuntu-latest
 
+        env:
+            APPLICATIONINSIGHTS_CONNECTION_STRING: ${{ secrets.APPLICATIONINSIGHTS_CONNECTION_STRING }}
+
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
@@ -48,7 +51,7 @@ jobs:
                   subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
             - name: Configure App Settings
-              if: ${{ secrets.APPLICATIONINSIGHTS_CONNECTION_STRING != '' }}
+              if: env.APPLICATIONINSIGHTS_CONNECTION_STRING != ''
               run: |
                   az webapp config appsettings set \
                     --name "${{ env.AZURE_WEBAPP_NAME }}" \
