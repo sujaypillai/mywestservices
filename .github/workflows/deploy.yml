@@ -12,6 +12,7 @@ permissions:
 
 env:
     AZURE_WEBAPP_NAME: azure-my-services
+    AZURE_RESOURCE_GROUP: rg-malaysia-west-services
     PYTHON_VERSION: "3.12"
 
 jobs:
@@ -45,6 +46,15 @@ jobs:
                   client-id: ${{ secrets.AZURE_CLIENT_ID }}
                   tenant-id: ${{ secrets.AZURE_TENANT_ID }}
                   subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+            - name: Configure App Settings
+              if: ${{ secrets.APPLICATIONINSIGHTS_CONNECTION_STRING != '' }}
+              run: |
+                  az webapp config appsettings set \
+                    --name "${{ env.AZURE_WEBAPP_NAME }}" \
+                    --resource-group "${{ env.AZURE_RESOURCE_GROUP }}" \
+                    --settings APPLICATIONINSIGHTS_CONNECTION_STRING="${{ secrets.APPLICATIONINSIGHTS_CONNECTION_STRING }}" \
+                    --output none
 
             - name: Deploy to Azure Web App
               uses: azure/webapps-deploy@v3

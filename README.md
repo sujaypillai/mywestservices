@@ -161,6 +161,35 @@ az role assignment create \
   --scope /subscriptions/$SUBSCRIPTION_ID
 ```
 
+## Azure Application Insights
+
+The application supports [Azure Application Insights](https://learn.microsoft.com/azure/azure-monitor/app/app-insights-overview) for logging and monitoring. When the `APPLICATIONINSIGHTS_CONNECTION_STRING` environment variable is set the app automatically configures the OpenTelemetry-based Azure Monitor exporter, enabling:
+
+- Distributed tracing for all incoming HTTP requests
+- Automatic exception and error tracking
+- Custom log forwarding (`logging` module messages are captured)
+- Live metrics and availability monitoring
+
+### Enable Application Insights
+
+1. Retrieve the connection string from your Application Insights resource (or create one in your Log Analytics workspace).
+2. Set the environment variable before starting the app:
+
+```bash
+export APPLICATIONINSIGHTS_CONNECTION_STRING="InstrumentationKey=<key>;IngestionEndpoint=<url>;..."
+```
+
+3. For Azure App Service, add it as an app setting (the `deploy.sh` script does this automatically if the variable is set in your shell environment):
+
+```bash
+az webapp config appsettings set \
+  --name <your-app-name> \
+  --resource-group rg-malaysia-west-services \
+  --settings APPLICATIONINSIGHTS_CONNECTION_STRING="<your-connection-string>"
+```
+
+When `APPLICATIONINSIGHTS_CONNECTION_STRING` is **not** set the application runs without any monitoring integration—no errors or warnings are raised.
+
 ## API Endpoints
 
 | Endpoint                | Method | Description                                 |
@@ -185,12 +214,13 @@ azure-malaysia-services/
 
 ## Environment Variables
 
-| Variable                  | Required | Description                                         |
-| ------------------------- | -------- | --------------------------------------------------- |
-| `AZURE_SUBSCRIPTION_ID`   | No       | Azure subscription (auto-detected if authenticated) |
-| `AZURE_OPENAI_ENDPOINT`   | No       | Azure OpenAI endpoint for chat                      |
-| `AZURE_OPENAI_API_KEY`    | No       | Azure OpenAI API key                                |
-| `AZURE_OPENAI_DEPLOYMENT` | No       | Model deployment name (default: gpt-4o)             |
+| Variable                              | Required | Description                                         |
+| ------------------------------------- | -------- | --------------------------------------------------- |
+| `AZURE_SUBSCRIPTION_ID`               | No       | Azure subscription (auto-detected if authenticated) |
+| `AZURE_OPENAI_ENDPOINT`               | No       | Azure OpenAI endpoint for chat                      |
+| `AZURE_OPENAI_API_KEY`                | No       | Azure OpenAI API key                                |
+| `AZURE_OPENAI_DEPLOYMENT`             | No       | Model deployment name (default: gpt-4o)             |
+| `APPLICATIONINSIGHTS_CONNECTION_STRING` | No     | Azure Application Insights connection string for logging and monitoring |
 
 ## License
 

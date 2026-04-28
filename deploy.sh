@@ -16,6 +16,9 @@ AZURE_OPENAI_ENDPOINT="https://skyway-dev-openai.openai.azure.com/"
 AZURE_OPENAI_DEPLOYMENT="gpt-5.2-chat"
 AZURE_SUBSCRIPTION_ID="85f1fd10-cc71-485c-ae43-bde6131f16bd"
 
+# Azure Application Insights connection string (optional, set to enable monitoring)
+APPLICATIONINSIGHTS_CONNECTION_STRING="${APPLICATIONINSIGHTS_CONNECTION_STRING:-}"
+
 # Managed Identity Client ID (will be retrieved after creation)
 MANAGED_IDENTITY_CLIENT_ID="dd17bb61-5e67-4294-aa6b-0d5e9675bc9e"
 
@@ -132,6 +135,7 @@ az webapp config appsettings set \
         AZURE_OPENAI_DEPLOYMENT="$AZURE_OPENAI_DEPLOYMENT" \
         AZURE_MANAGED_IDENTITY_CLIENT_ID="$MANAGED_IDENTITY_CLIENT_ID" \
         AZURE_SUBSCRIPTION_ID="$AZURE_SUBSCRIPTION_ID" \
+        APPLICATIONINSIGHTS_CONNECTION_STRING="$APPLICATIONINSIGHTS_CONNECTION_STRING" \
         SCM_DO_BUILD_DURING_DEPLOYMENT="true" \
     --output none
 
