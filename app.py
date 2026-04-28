@@ -5,6 +5,7 @@ A Flask app that displays and answers questions about Azure services in Malaysia
 
 import os
 import json
+import logging
 from flask import Flask, render_template, request, jsonify
 from azure.identity import DefaultAzureCredential, ManagedIdentityCredential
 from azure.mgmt.resource import ResourceManagementClient, SubscriptionClient
@@ -15,7 +16,16 @@ from openai import AzureOpenAI
 # Load environment variables from .env file (for local development)
 load_dotenv()
 
+# Configure Azure Application Insights if connection string is provided
+_appinsights_connection_string = os.environ.get("APPLICATIONINSIGHTS_CONNECTION_STRING")
+if _appinsights_connection_string:
+    from azure.monitor.opentelemetry import configure_azure_monitor
+    configure_azure_monitor(connection_string=_appinsights_connection_string)
+else:
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
+
 app = Flask(__name__)
+logger = logging.getLogger(__name__)
 
 # Cache for services data
 _services_cache = None
@@ -99,7 +109,7 @@ def get_deployable_resources_in_region(region: str = "Malaysia West"):
         return results
         
     except Exception as e:
-        print(f"Error fetching resource providers: {e}")
+        logger.error("Error fetching resource providers: %s", e)
         raise
 
 
@@ -116,15 +126,15 @@ def get_malaysia_west_services():
         
         if services:
             _services_cache = services
-            print(f"Successfully loaded {len(services)} resource types from Azure")
+            logger.info("Successfully loaded %d resource types from Azure", len(services))
             return services
         else:
-            print("No services found, this might indicate an issue with the region name")
+            logger.warning("No services found, this might indicate an issue with the region name")
             return []
         
     except Exception as e:
-        print(f"Error fetching services: {e}")
-        print("Note: Make sure you are logged in with 'az login' and have access to a subscription")
+        logger.error("Error fetching services: %s", e)
+        logger.info("Note: Make sure you are logged in with 'az login' and have access to a subscription")
         return []
 
 
@@ -212,7 +222,7 @@ When answering:
         return response.choices[0].message.content
         
     except Exception as e:
-        print(f"AI API error: {e}")
+        logger.error("AI API error: %s", e)
         return generate_simple_response(question, services)
 
 
