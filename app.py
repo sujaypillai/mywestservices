@@ -8,7 +8,8 @@ import json
 import logging
 from flask import Flask, render_template, request, jsonify
 from azure.identity import DefaultAzureCredential, ManagedIdentityCredential
-from azure.mgmt.resource import ResourceManagementClient, SubscriptionClient
+from azure.mgmt.resource import ResourceManagementClient
+from azure.mgmt.subscription import SubscriptionClient
 import requests
 from dotenv import load_dotenv
 from openai import AzureOpenAI
